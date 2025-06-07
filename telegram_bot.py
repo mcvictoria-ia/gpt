@@ -144,6 +144,28 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"\u274C Error: {e}")
 
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ALLOWED_USER_ID:
+        await update.message.reply_text("\u274C Acceso denegado.")
+        return
+
+    photo = await update.message.photo[-1].get_file()
+    photo_data = BytesIO()
+    await photo.download_to_memory(out=photo_data)
+    photo_data.seek(0)
+
+    try:
+        files = {"files": ("photo.jpg", photo_data)}
+        headers = {"Authorization": f"Bearer {API_KEY}"}
+        response = requests.post(ANYTHINGLLM_API_UPLOAD, files=files, headers=headers)
+
+        if response.status_code == 200:
+            await update.message.reply_text("\U0001F4F7 Imagen cargada e indexada correctamente.")
+        else:
+            await update.message.reply_text(f"\u274C Error al subir la imagen. C\u00F3digo: {response.status_code}")
+    except Exception as e:
+        await update.message.reply_text(f"\u274C Error: {e}")
+
 if __name__ == "__main__":
     if not TELEGRAM_TOKEN or not API_KEY or not ALLOWED_USER_ID:
         raise RuntimeError("Required environment variables are missing")
@@ -155,6 +177,7 @@ if __name__ == "__main__":
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.add_handler(MessageHandler(filters.VOICE, handle_voice))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
 
     print("\u2728 Bot iniciado. Esperando mensajes...")
     app.run_polling()
