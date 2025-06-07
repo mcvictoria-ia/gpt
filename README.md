@@ -19,7 +19,10 @@ TELEGRAM_TOKEN=<your Telegram bot token>
 ANYTHINGLLM_API_KEY=<AnythingLLM API key>
 ALLOWED_USER_ID=<numeric Telegram user ID allowed to interact>
 WORKSPACE_SLUG=<workspace slug>  # optional, defaults to "sabadell"
+ANYTHINGLLM_BASE_URL=<AnythingLLM base URL>  # optional, defaults to http://localhost:3000
 ```
+
+The bot automatically loads these variables from a `.env` file using `python-dotenv` when it starts.
 
 Example `.env` file:
 
@@ -28,6 +31,7 @@ TELEGRAM_TOKEN=your-telegram-token
 ANYTHINGLLM_API_KEY=your-anythingllm-key
 ALLOWED_USER_ID=123456789
 WORKSPACE_SLUG=sabadell
+ANYTHINGLLM_BASE_URL=http://localhost:3000
 ```
 
 3. Run the bot:

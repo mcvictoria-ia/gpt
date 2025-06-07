@@ -8,13 +8,17 @@ import asyncio
 import re
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
+from dotenv import load_dotenv
+
+load_dotenv()
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 ALLOWED_USER_ID = int(os.environ.get("ALLOWED_USER_ID", "0"))
 WORKSPACE_SLUG = os.environ.get("WORKSPACE_SLUG", "sabadell")
-ANYTHINGLLM_API_CHAT = f"http://localhost:3000/api/v1/workspace/{WORKSPACE_SLUG}/chat"
-ANYTHINGLLM_API_UPLOAD = f"http://localhost:3000/api/v1/workspace/{WORKSPACE_SLUG}/upload"
-ANYTHINGLLM_API_LIST = f"http://localhost:3000/api/v1/workspace/{WORKSPACE_SLUG}/documents"
+ANYTHINGLLM_BASE_URL = os.environ.get("ANYTHINGLLM_BASE_URL", "http://localhost:3000")
+ANYTHINGLLM_API_CHAT = f"{ANYTHINGLLM_BASE_URL}/api/v1/workspace/{WORKSPACE_SLUG}/chat"
+ANYTHINGLLM_API_UPLOAD = f"{ANYTHINGLLM_BASE_URL}/api/v1/workspace/{WORKSPACE_SLUG}/upload"
+ANYTHINGLLM_API_LIST = f"{ANYTHINGLLM_BASE_URL}/api/v1/workspace/{WORKSPACE_SLUG}/documents"
 API_KEY = os.environ.get("ANYTHINGLLM_API_KEY")
 
 siniestros_activos = {}
