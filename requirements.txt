@@ -2,3 +2,6 @@ python-telegram-bot==20.3
 speechrecognition
 pydub
 requests
+pdfplumber
+python-docx
+odfpy
